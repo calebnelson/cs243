@@ -4,20 +4,8 @@
 #include <windows.h>
 #include <iostream>
 
+#include "TimeManagerWindows.h"
 using namespace std;
-
-class TimeManager{
-	private:
-		LARGE_INTEGER frequency;
-		LARGE_INTEGER st;
-		LARGE_INTEGER ed;
-		double interval = 0.0;
-
-	public:
-		void start();
-		void end();
-		double getInterval();
-};
 
 void TimeManager::start(){
 	QueryPerformanceFrequency(&frequency);

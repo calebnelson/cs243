@@ -2,13 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
+#include <iostream>
 
-#include  "TimeManagerWindows.cc" //will eventually replace this with OS code
+#include  "TimeManagerWindows.h" //will eventually replace this with OS code
+using namespace std;
 
 template <typename T>
-void matrixSum(int cols, int size, T signal){
+void matrixSum(int size, int cols, T signal){
 
-  int rows = (size / cols) - 1;
+  int numElements = size/sizeof(T);
+  int rows = (numElements / cols) - 1;
 
   // Allocate the space                                                                                                                     
   T *buf = (T*)malloc(size);
@@ -49,11 +52,11 @@ int main(int argc, char *argv[])
   }
 
   tm.start();
-  int rows = atoi(argv[1]);
-  int cols = atoi(argv[2]);
-  matrixSum(rows, cols, 5);
+  int cols = atoi(argv[1]);
+  int size = atoi(argv[2]);
+  matrixSum(size, cols, 5);
   tm.end();
 
-  cout << "Time Elapsed = " << tm.getInterval();
+  std::cout << "Time Elapsed = " << tm.getInterval();
 }
 
