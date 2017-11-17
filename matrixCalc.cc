@@ -51,12 +51,9 @@ void matrixMultiply(int size, T signal){
 	int n = (int)sqrt(numElements); //all the matricies will be square, so each matrix will be NxN
 	numElements = n*n; //Since we rounded down n to the nearest int, we update the value of numElements to make sure it's correct
 
-	int loc2 = size/3; //the location of where the second array will be stored
-	int locRes = 2*loc2; //the location of the result array
-
 	T *buf = (T*)malloc(size);
-	T *buf2 = buf + loc2;
-	T *bufRes = buf + locRes;
+	T *buf2 = buf + numElements;
+	T *bufRes = buf2 + numElements;
 
 	// Set everything to an initial value
 	int r, c;
@@ -64,7 +61,6 @@ void matrixMultiply(int size, T signal){
 	  T *rp = buf + r*n;
 	  T *rp2 = buf2 + r*n;
 	  for (c = 0; c < n; c++) {
-		cout << "Inserting: " << r+c << endl;
 	    rp[c] = (T)(r+c);
 	    rp2[c] = (T)(n-r-c);
 	  }
