@@ -81,6 +81,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+.cproject
+.project
 *.d
 *.mk
 Debug/*
