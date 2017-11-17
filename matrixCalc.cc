@@ -45,6 +45,19 @@ void matrixSum(int size, int cols, T signal){ //T signal only serves to designat
 }
 
 template <typename T>
+void matrixSumTimer(int size, int cols, T signal, int repitions, double *sum, double *avg){
+	TimeManager tm = TimeManager();
+	*sum = 0.0;
+	for(int i = 0; i < repitions; i++){
+		tm.start();
+		matrixSum(size, cols, signal);
+		tm.end();
+		*sum += tm.getInterval();
+	}
+	*avg = *sum/repitions;
+}
+
+template <typename T>
 void matrixMultiply(int size, T signal){
 	int numElements = size/sizeof(T);
 	numElements /= 3; //we're splitting the buffer between 3 matrixes, so numElements will be the number of elements in each matrix
@@ -84,6 +97,19 @@ void matrixMultiply(int size, T signal){
 	free(buf);
 }
 
+template <typename T>
+void matrixMultiplyTimer(int size, T signal, int repitions, double *sum, double *avg){
+	TimeManager tm = TimeManager();
+	*sum = 0.0;
+	for(int i = 0; i < repitions; i++){
+		tm.start();
+		matrixMultiply(size, signal);
+		tm.end();
+		*sum += tm.getInterval();
+	}
+	*avg = *sum/repitions;
+}
+
 //for testing
 int main(int argc, char *argv[])
 {
@@ -96,16 +122,22 @@ int main(int argc, char *argv[])
   int size = atoi(argv[1]);
   int cols = atoi(argv[2]);
 
+  double sum = 0.0, avg = 0.0;
+
   tm.start();
   matrixSum(size, cols, 5);
   tm.end();
-
   std::cout << "Time Elapsed For Sum = " << tm.getInterval() << endl;
 
   tm.start();
   matrixMultiply(size, 5);
   tm.end();
-
   std::cout << "Time Elapsed For Multiply = " << tm.getInterval() << endl;
+
+  matrixSumTimer(size, cols, 5, 5, &sum, &avg);
+  std::cout << "Time Elapsed For 5x Sum = " << sum << " Avg: " << avg << endl;
+
+  matrixMultiplyTimer(size, 5, 5, &sum, &avg);
+  std::cout << "Time Elapsed For 5x Multiply = " << sum << " Avg: " << avg << endl;
 }
 
