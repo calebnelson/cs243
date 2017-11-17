@@ -8,6 +8,8 @@
 #ifndef TIMEMANAGERWINDOWS_H_
 #define TIMEMANAGERWINDOWS_H_
 
+#include <windows.h>
+
 class TimeManager{
 	private:
 		LARGE_INTEGER frequency;
