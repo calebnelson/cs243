@@ -111,7 +111,7 @@ void matrixMultiplyTimer(int size, T signal, int repitions, double *sum, double 
 }
 
 //for testing
-int main(int argc, char *argv[])
+/*int main(int argc, char *argv[])
 {
   TimeManager tm = TimeManager();
   if (argc != 3) {
@@ -139,5 +139,5 @@ int main(int argc, char *argv[])
 
   matrixMultiplyTimer(size, 5, 5, &sum, &avg);
   std::cout << "Time Elapsed For 5x Multiply = " << sum << " Avg: " << avg << endl;
-}
+}*/
 
