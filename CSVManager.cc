@@ -19,9 +19,9 @@ CSVManager::CSVManager(string fileName, string PlatName, string flags){
 	CompFlags = flags;
 }
 
-void CSVManager::writeLine(int bufSize, string testName, int cols, string dataType, double time){
+void CSVManager::writeLine(int bufSize, string testName, int cols, string dataType, double t){
 	//get datetime as string
-	ofstream f(file);
+	ofstream f(file.c_str());
 	time_t rawtime;
 	struct tm * timeinfo;
 	char buffer[80];
@@ -46,7 +46,7 @@ void CSVManager::writeLine(int bufSize, string testName, int cols, string dataTy
 		str = str + to_string(cols) + ",";
 	}
 
-	str = str + dataType + "," + to_string(time) + ",";
+	str = str + dataType + "," + to_string(t) + ",";
 
 	f << str << endl;
 	f.close();
