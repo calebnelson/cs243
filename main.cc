@@ -11,12 +11,13 @@
 int main(int argc, char *argv[])
 {
 	CSVManager csvm = CSVManager("test1", "ASUS Laptop", "");
-	int bufSize, signal = 0;
-	double sum, avg;
-	for (bufSize = 1; bufSize <= 10; bufSize += 0.5){
-		matrixSumTimer(bufSize*1000000, bufSize*100, signal, 1, &sum, &avg);
+	int bufSize = 0;
+	int signal = 0;
+	long sum, avg;
+	for (bufSize = 1; bufSize <= 20; bufSize += 1){
+		matrixSumTimer(bufSize*500000, bufSize*100, signal, 1, &sum, &avg);
 		csvm.writeLine(bufSize, "Sum", bufSize*100, "int", sum);
-		matrixMultiplyTimer(bufSize*1000000, signal, 1, &sum, &avg);
+		matrixMultiplyTimer(bufSize*500000, signal, 1, &sum, &avg);
 		csvm.writeLine(bufSize, "Multiply", 0, "int", sum);
 	}
 }

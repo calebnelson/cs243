@@ -19,9 +19,9 @@ CSVManager::CSVManager(string fileName, string PlatName, string flags){
 	CompFlags = flags;
 }
 
-void CSVManager::writeLine(int bufSize, string testName, int cols, string dataType, double t){
+void CSVManager::writeLine(int bufSize, string testName, int cols, string dataType, long t){
 	//get datetime as string
-	ofstream f(file.c_str());
+	ofstream f(file.c_str(), ios::out | ios::app );
 	time_t rawtime;
 	struct tm * timeinfo;
 	char buffer[80];
@@ -32,21 +32,12 @@ void CSVManager::writeLine(int bufSize, string testName, int cols, string dataTy
 	strftime(buffer,sizeof(buffer),"%d-%m-%Y %I:%M:%S",timeinfo);
 	string datetime(buffer);
 
-	string str = datetime + "," +
-			PlatformName + "," +
-			CompFlags + "," +
-			std::to_string(bufSize) + "," +
-			testName + ",";
+	char str[1024];
+	sprintf(str, "%s,%s,%s,%d,%s,%d,%s,%ld",
+			datetime.c_str(), PlatformName.c_str(), CompFlags.c_str(),
+			bufSize, testName.c_str(), cols, dataType.c_str(), t);
 
-	//insert cols only if it's a positive number (a zero or negative number usually means it's unused, i.e. multiply was called instead
-	if (cols <= 0){
-		str = str + ",";
-	}
-	else{
-		str = str + to_string(cols) + ",";
-	}
-
-	str = str + dataType + "," + to_string(t) + ",";
+	puts(str);
 
 	f << str << endl;
 	f.close();

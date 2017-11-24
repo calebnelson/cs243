@@ -5,7 +5,7 @@
 #include <iostream>
 #include <math.h>
 
-#include  "TimeManagerWindows.h" //will eventually replace this with OS code
+#include  "virtos.h" //will eventually replace this with OS code
 using namespace std;
 
 template <typename T>
@@ -45,14 +45,13 @@ void matrixSum(int size, int cols, T signal){ //T signal only serves to designat
 }
 
 template <typename T>
-void matrixSumTimer(int size, int cols, T signal, int repitions, double *sum, double *avg){
-	TimeManager tm = TimeManager();
+void matrixSumTimer(int size, int cols, T signal, int repitions, long *sum, long *avg){
+	Timer tm = Timer();
 	*sum = 0.0;
 	for(int i = 0; i < repitions; i++){
-		tm.start();
+		tm.begin();
 		matrixSum(size, cols, signal);
-		tm.end();
-		*sum += tm.getInterval();
+		*sum += tm.delta();
 	}
 	*avg = *sum/repitions;
 }
@@ -98,14 +97,13 @@ void matrixMultiply(int size, T signal){
 }
 
 template <typename T>
-void matrixMultiplyTimer(int size, T signal, int repitions, double *sum, double *avg){
-	TimeManager tm = TimeManager();
+void matrixMultiplyTimer(int size, T signal, int repitions, long *sum, long *avg){
+	Timer tm = Timer();
 	*sum = 0.0;
 	for(int i = 0; i < repitions; i++){
-		tm.start();
+		tm.begin();
 		matrixMultiply(size, signal);
-		tm.end();
-		*sum += tm.getInterval();
+		*sum += tm.delta();
 	}
 	*avg = *sum/repitions;
 }
@@ -113,7 +111,7 @@ void matrixMultiplyTimer(int size, T signal, int repitions, double *sum, double 
 //for testing
 /*int main(int argc, char *argv[])
 {
-  TimeManager tm = TimeManager();
+  Timer tm = Timer();
   if (argc != 3) {
     printf("Args: #size #col\n");
     return -1;
@@ -122,17 +120,15 @@ void matrixMultiplyTimer(int size, T signal, int repitions, double *sum, double 
   int size = atoi(argv[1]);
   int cols = atoi(argv[2]);
 
-  double sum = 0.0, avg = 0.0;
+  long sum = 0, avg = 0;
 
-  tm.start();
+  tm.begin();
   matrixSum(size, cols, 5);
-  tm.end();
-  std::cout << "Time Elapsed For Sum = " << tm.getInterval() << endl;
+  std::cout << "Time Elapsed For Sum = " << tm.delta() << endl;
 
-  tm.start();
-  matrixMultiply(size, 5);
   tm.end();
-  std::cout << "Time Elapsed For Multiply = " << tm.getInterval() << endl;
+  matrixMultiply(size, 5);
+  std::cout << "Time Elapsed For Multiply = " << tm.delta() << endl;
 
   matrixSumTimer(size, cols, 5, 5, &sum, &avg);
   std::cout << "Time Elapsed For 5x Sum = " << sum << " Avg: " << avg << endl;
