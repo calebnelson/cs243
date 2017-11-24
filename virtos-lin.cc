@@ -2,21 +2,33 @@
 
 #if myPLAT == myLIN
 
-#include <time.h>
-#include <mach/mach_time.h>
-#include <unistd.h>
+#include <stdlib.h>
+#include <ctime>
+#include <ratio>
+#include <chrono>
 
-Timer::Timer() { }
+using namespace std::chrono;
 
-Timer::~Timer() { }
+typedef high_resolution_clock::time_point HTP;
+
+Timer::Timer() { 
+  ptr = (void*)malloc(sizeof(HTP));
+}
+
+Timer::~Timer() { 
+  if (ptr) free(ptr);
+}
 
 void Timer::begin() {
-  val = (long)mach_absolute_time();
+  HTP tt = high_resolution_clock::now();
+  *(HTP*)ptr = tt;
 }
 
 long Timer::delta() {
-  long now = (long)mach_absolute_time();
-  return now - val;
+  HTP t1 = *(HTP*)ptr;
+  HTP t2 = high_resolution_clock::now();
+  microseconds us = duration_cast<microseconds>(t2 - t1);
+  return (long)us.count();
 }
 
 void VirtOs::pause() {

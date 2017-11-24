@@ -16,11 +16,10 @@ using namespace std;
 // Make sure one is defined
 //
 #define myWIN 1
-#define myRAS 2
-#define myLIN 3
+#define myLIN 2
 
 #ifndef myPLAT
-#define myPLAT myWIN
+#define myPLAT myLIN
 #endif
 
 // Performance timer class 
