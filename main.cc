@@ -10,14 +10,14 @@
 
 int main(int argc, char *argv[])
 {
-	CSVManager csvm = CSVManager("test1", "ASUS Laptop", "");
+	CSVManager csvm = CSVManager("test1", "Raspberry Pi", "");
 	int bufSize = 0;
 	int signal = 0;
 	long sum, avg;
 	for (bufSize = 1; bufSize <= 20; bufSize += 1){
-		matrixSumTimer(bufSize*500000, bufSize*100, signal, 1, &sum, &avg);
-		csvm.writeLine(bufSize, "Sum", bufSize*100, "int", sum);
-		matrixMultiplyTimer(bufSize*500000, signal, 1, &sum, &avg);
-		csvm.writeLine(bufSize, "Multiply", 0, "int", sum);
+		matrixSumTimer(bufSize*102400, bufSize*100, signal, 12, &sum, &avg);
+		csvm.writeLine(bufSize, "Sum", bufSize*100, "int", avg);
+		//matrixMultiplyTimer(bufSize*102400, signal, 1, &sum, &avg);
+		//csvm.writeLine(bufSize, "Multiply", 0, "int", sum);
 	}
 }
