@@ -21,7 +21,7 @@ class CSVManager{
 		string file;
 
 		CSVManager(string fileName, string PlatName, string flags);
-		void writeLine(int bufSize, string testName, int cols, string dataType, long t);
+		void writeLine(double bufSize, string testName, int cols, string dataType, long t);
 
 };
 

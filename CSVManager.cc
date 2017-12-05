@@ -19,7 +19,7 @@ CSVManager::CSVManager(string fileName, string PlatName, string flags){
 	CompFlags = flags;
 }
 
-void CSVManager::writeLine(int bufSize, string testName, int cols, string dataType, long t){
+void CSVManager::writeLine(double bufSize, string testName, int cols, string dataType, long t){
 	//get datetime as string
 	ofstream f(file.c_str(), ios::out | ios::app );
 	time_t rawtime;
@@ -33,7 +33,7 @@ void CSVManager::writeLine(int bufSize, string testName, int cols, string dataTy
 	string datetime(buffer);
 
 	char str[1024];
-	sprintf(str, "%s,%s,%s,%d,%s,%d,%s,%ld, %f",
+	sprintf(str, "%s,%s,%s,%lf,%s,%d,%s,%ld, %f",
 		datetime.c_str(), PlatformName.c_str(), CompFlags.c_str(),
 		bufSize, testName.c_str(), cols, dataType.c_str(), t, 
 		100.0 * (float)t / (float)bufSize);
