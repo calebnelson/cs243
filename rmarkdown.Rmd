@@ -1,0 +1,27 @@
+---
+title: "Untitled"
+author: "Caleb Nelson"
+date: "December 10, 2017"
+output: html_document
+---
+```{r}
+setwd("C:/Users/User/Documents/GitHub/cs243")
+data = read.csv("data.csv")
+
+
+for (platform in list("ASUS Laptop", "Raspberry Pi", "Mac")){
+  for (dType in list("int", "float", "long", "char")){
+    for (test in list("Sum", "Multiply")){
+      currentData = data[data$Machine == platform & data$Data.Type == dType & data$Test == test, ]
+      bufSize = currentData$Buffer.Size
+      time = currentData$Time
+      plot(bufSize, time, main=paste(platform, ", ", dType, test))
+      for (bSize in list(0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10)){
+        ebarData = currentData[currentData$Buffer.Size == bSize, ]
+      }
+      abline(lm(time~bufSize), col="red")
+    }
+  }
+}
+```
+
