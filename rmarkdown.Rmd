@@ -2,22 +2,105 @@
 title: "Untitled"
 author: "Caleb Nelson"
 date: "December 10, 2017"
-output: html_document
+output:
+  html_document: default
 ---
-```{r}
+##Grid of Graphs - all 48 graphs in one grid for easier comparisons
+```{r echo=FALSE}
 setwd("C:/Users/User/Documents/GitHub/cs243")
 data = read.csv("Caleb-243-SummaryLatest.csv")
+data$TimeMinus <- (data$TimeAvg - data$TimeStd)
+data$TimePlus <- (data$TimeAvg + data$TimeStd)
 
+par(mar=c(2,2,2,2))
+for (y in list ("Time", "OpsTime")){
+for (test in list("Sum", "Multiply")){
+par(mfrow=c(4, 3))
 for (dType in list("int", "float", "long", "char")){
-  par(mfrow=c(2,3))
-  for (test in list("Sum", "Multiply")){
-    for (platform in list("ASUS Laptop", "Raspberry Pi", "Mac")){
+for (platform in list("ASUS Laptop", "Mac", "Raspberry Pi")){
       currentData = data[data$Machine == platform & data$DataType == dType & data$Operation == test, ]
       BufferSize = currentData$Buffer.Size
-      OpsPerTime = currentData$Ops.T.Mean
-      plot(BufferSize, OpsPerTime, main=paste(platform, ", ", dType, test), type="o")
-      lines(BufferSize, currentData$Ops.T.Std, main=paste(platform, ", ", dType, test), type="o", col="red")
-      lines(BufferSize, currentData$Ops.T.Dev, main=paste(platform, ", ", dType, test), type="o", col="blue")
+      if (y == "Time"){
+        plot(BufferSize, currentData$TimeAvg, main=paste(platform, dType, test, y), type="l")
+        lines(BufferSize, currentData$TimePlus, main=paste(platform, dType, test, y), type="l", col="red")
+        lines(BufferSize, currentData$TimeMinus, main=paste(platform, dType, test, y), type="l", col="blue")
+      }
+      if (y == "OpsTime"){
+        plot(BufferSize, currentData$Ops.T.Mean, main=paste(platform, dType, test, y), type="l")
+        lines(BufferSize, currentData$Ops.T.Std, main=paste(platform, dType, test, y), type="l", col="red")
+        lines(BufferSize, currentData$Ops.T.Dev, main=paste(platform, dType, test, y), type="l", col="blue")
+      }
+    }
+  }
+}
+}
+```
+
+##Individual Graphs - all 48 graphs plotted seperately for better legibility 
+
+```{r echo=FALSE}
+for (y in list ("Time", "OpsTime")){
+for (test in list("Sum", "Multiply")){
+for (dType in list("int", "float", "long", "char")){
+for (platform in list("ASUS Laptop", "Mac", "Raspberry Pi")){
+      currentData = data[data$Machine == platform & data$DataType == dType & data$Operation == test, ]
+      BufferSize = currentData$Buffer.Size
+      if (y == "Time"){
+        plot(BufferSize, currentData$TimeAvg, main=paste(platform, dType, test, y), type="o")
+        lines(BufferSize, currentData$TimePlus, main=paste(platform, dType, test, y), type="o", col="red")
+        lines(BufferSize, currentData$TimeMinus, main=paste(platform, dType, test, y), type="o", col="blue")
+      }
+      if (y == "OpsTime"){
+        plot(BufferSize, currentData$Ops.T.Mean, main=paste(platform, dType, test, y), type="o")
+        lines(BufferSize, currentData$Ops.T.Std, main=paste(platform, dType, test, y), type="o", col="red")
+        lines(BufferSize, currentData$Ops.T.Dev, main=paste(platform, dType, test, y), type="o", col="blue")
+      }
+    }
+  }
+}
+}
+```
+
+##Block Data Implementation
+###Note: All data measured on the Macbook Pro. The orange line is with a block size of 1, the red line is with a block size of 32, and the blue line is with a block size of 64
+####Graph Grid
+```{r echo=FALSE}
+blockData = read.csv("CS243-Mac Blocked Performance data.csv")
+
+for (y in list ("Time", "OpsTime")){
+par(mfrow=c(2,2))
+for (dType in list("int", "float", "long", "char")){
+    currentData = blockData[blockData$DataType == dType, ]
+    BufferSize = currentData$BufSize
+    if (y == "Time"){
+      plot(BufferSize, currentData$M01.Time, main=paste(dType, ",", "BufSize vs. Time"), ylab="Time", type="l", col="orange")
+      lines(BufferSize, currentData$M32.Time, type="l", col="red")
+      lines(BufferSize, currentData$M64.Time, type="l", col="blue")
+    }
+    if (y == "OpsTime"){
+      plot(BufferSize, currentData$M01.Ops.T, main=paste(dType, ",", "BufSize vs. Ops/Time"), ylab="Operations/Time", type="l", col="orange")
+      lines(BufferSize, currentData$M32.Ops.T, type="l", col="red")
+      lines(BufferSize, currentData$M64.Ops.T, type="l", col="blue")
+    }
+  }
+}
+```
+
+####Individual Graphs
+```{r echo=FALSE}
+for (y in list ("Time", "OpsTime")){
+for (dType in list("int", "float", "long", "char")){
+    currentData = blockData[blockData$DataType == dType, ]
+    BufferSize = currentData$BufSize
+    if (y == "Time"){
+      plot(BufferSize, currentData$M01.Time, main=paste("Block Implementation for", dType, ",", "BufSize vs. Time"), ylab="Time", type="o", col="orange")
+      lines(BufferSize, currentData$M32.Time, type="o", col="red")
+      lines(BufferSize, currentData$M64.Time, type="o", col="blue")
+    }
+    if (y == "OpsTime"){
+      plot(BufferSize, currentData$M01.Ops.T, main=paste("Block Implementation for", dType, ",", "BufSize vs. Ops/Time"), ylab="Operations/Time", type="o", col="orange")
+      lines(BufferSize, currentData$M32.Ops.T, type="o", col="red")
+      lines(BufferSize, currentData$M64.Ops.T, type="o", col="blue")
     }
   }
 }
