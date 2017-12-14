@@ -89,3 +89,5 @@ Debug/*
 *.csv
 *.png
 Rplot.pdf
+.RData
+.Rhistory
