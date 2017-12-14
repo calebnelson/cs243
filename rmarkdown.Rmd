@@ -1,14 +1,17 @@
 ---
-title: "Untitled"
+title: "CS 243 Project Graphs"
 author: "Caleb Nelson"
 date: "December 10, 2017"
 output:
   html_document: default
 ---
-##Grid of Graphs - all 48 graphs in one grid for easier comparisons
+##Grid of Graphs - all 48 graphs in one grid for easier comparisons and at-a-glance viewing
+### Black line - mean of all 20 trials
+### Red line - mean + 1 standard deviation
+### Blue line - mean - 1 standard deviation
 ```{r echo=FALSE}
-setwd("C:/Users/User/Documents/GitHub/cs243")
-data = read.csv("Caleb-243-SummaryLatest.csv")
+setwd("C:/Users/User/Documents/GitHub/cs243") #NOTE - please change this to current directory the data is stored in if you want to run this yourself!
+data = read.csv("SummarizedData.csv")
 data$TimeMinus <- (data$TimeAvg - data$TimeStd)
 data$TimePlus <- (data$TimeAvg + data$TimeStd)
 
@@ -49,11 +52,13 @@ for (platform in list("ASUS Laptop", "Mac", "Raspberry Pi")){
         plot(BufferSize, currentData$TimeAvg, main=paste(platform, dType, test, y), type="o")
         lines(BufferSize, currentData$TimePlus, main=paste(platform, dType, test, y), type="o", col="red")
         lines(BufferSize, currentData$TimeMinus, main=paste(platform, dType, test, y), type="o", col="blue")
+        legend("topleft", legend=c("Avg+std", "Avg", "Avg-std"), col=c("red", "black", "blue"), pch=15, bty="n")
       }
       if (y == "OpsTime"){
         plot(BufferSize, currentData$Ops.T.Mean, main=paste(platform, dType, test, y), type="o")
         lines(BufferSize, currentData$Ops.T.Std, main=paste(platform, dType, test, y), type="o", col="red")
         lines(BufferSize, currentData$Ops.T.Dev, main=paste(platform, dType, test, y), type="o", col="blue")
+        legend("bottomleft", legend=c("Avg+std", "Avg", "Avg-std"), col=c("red", "black", "blue"), pch=15, bty="n")
       }
     }
   }
@@ -65,7 +70,7 @@ for (platform in list("ASUS Laptop", "Mac", "Raspberry Pi")){
 ###Note: All data measured on the Macbook Pro. The orange line is with a block size of 1, the red line is with a block size of 32, and the blue line is with a block size of 64
 ####Graph Grid
 ```{r echo=FALSE}
-blockData = read.csv("CS243-Mac Blocked Performance data.csv")
+blockData = read.csv("BlockedPerformanceData.csv")
 
 for (y in list ("Time", "OpsTime")){
 par(mfrow=c(2,2))
@@ -96,11 +101,13 @@ for (dType in list("int", "float", "long", "char")){
       plot(BufferSize, currentData$M01.Time, main=paste("Block Implementation for", dType, ",", "BufSize vs. Time"), ylab="Time", type="o", col="orange")
       lines(BufferSize, currentData$M32.Time, type="o", col="red")
       lines(BufferSize, currentData$M64.Time, type="o", col="blue")
+      legend("topleft", legend=c("M01", "M32", "M64"), col=c("orange", "red", "blue"), pch=15, bty="n")
     }
     if (y == "OpsTime"){
       plot(BufferSize, currentData$M01.Ops.T, main=paste("Block Implementation for", dType, ",", "BufSize vs. Ops/Time"), ylab="Operations/Time", type="o", col="orange")
       lines(BufferSize, currentData$M32.Ops.T, type="o", col="red")
       lines(BufferSize, currentData$M64.Ops.T, type="o", col="blue")
+      legend("bottomleft", legend=c("M01", "M32", "M64"), col=c("orange", "red", "blue"), pch=15, bty="n")
     }
   }
 }

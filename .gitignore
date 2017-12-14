@@ -86,7 +86,6 @@ $RECYCLE.BIN/
 *.d
 *.mk
 Debug/*
-*.csv
 *.png
 Rplot.pdf
 .RData
